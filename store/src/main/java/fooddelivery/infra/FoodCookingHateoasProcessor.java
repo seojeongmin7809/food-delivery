@@ -14,6 +14,11 @@ public class FoodCookingHateoasProcessor
     public EntityModel<FoodCooking> process(EntityModel<FoodCooking> model) {
         model.add(
             Link
+                .of(model.getRequiredLink("self").getHref() + "/accept")
+                .withRel("accept")
+        );
+        model.add(
+            Link
                 .of(model.getRequiredLink("self").getHref() + "/start")
                 .withRel("start")
         );

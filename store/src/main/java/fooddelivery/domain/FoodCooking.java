@@ -1,7 +1,6 @@
 package fooddelivery.domain;
 
 import fooddelivery.StoreApplication;
-import fooddelivery.domain.OrderAccepted;
 import fooddelivery.domain.OrderRejected;
 import java.util.Date;
 import java.util.List;
@@ -32,9 +31,6 @@ public class FoodCooking {
 
     @PostPersist
     public void onPostPersist() {
-        OrderAccepted orderAccepted = new OrderAccepted(this);
-        orderAccepted.publishAfterCommit();
-
         OrderRejected orderRejected = new OrderRejected(this);
         orderRejected.publishAfterCommit();
     }
@@ -44,6 +40,11 @@ public class FoodCooking {
             FoodCookingRepository.class
         );
         return foodCookingRepository;
+    }
+
+    public void accept(AcceptCommand acceptCommand) {
+        OrderAccepted orderAccepted = new OrderAccepted(this);
+        orderAccepted.publishAfterCommit();
     }
 
     public void start() {
