@@ -1,8 +1,6 @@
 package fooddelivery.domain;
 
 import fooddelivery.RiderApplication;
-import fooddelivery.domain.Delivered;
-import fooddelivery.domain.Picked;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -24,19 +22,23 @@ public class Delivery {
     private String address;
 
     @PostPersist
-    public void onPostPersist() {
-        Picked picked = new Picked(this);
-        picked.publishAfterCommit();
-
-        Delivered delivered = new Delivered(this);
-        delivered.publishAfterCommit();
-    }
+    public void onPostPersist() {}
 
     public static DeliveryRepository repository() {
         DeliveryRepository deliveryRepository = RiderApplication.applicationContext.getBean(
             DeliveryRepository.class
         );
         return deliveryRepository;
+    }
+
+    public void pick() {
+        Picked picked = new Picked(this);
+        picked.publishAfterCommit();
+    }
+
+    public void confirmDelivered() {
+        Delivered delivered = new Delivered(this);
+        delivered.publishAfterCommit();
     }
 
     public static void duplicateOrderInfo(OrderPlaced orderPlaced) {
